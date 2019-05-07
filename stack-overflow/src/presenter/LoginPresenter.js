@@ -1,39 +1,38 @@
 import model from "../model/Login";
 
-
-
-class LoginPresenter {
+class LoginPresenter{
 
     onCreate() {
-        
+
         var username = model.state.newUser.username;
         var password = model.state.newUser.password;
 
         model.verifyRegisterUser(username, password);
 
-        if(!model.state.invalidRegister){
+        if (!model.state.invalidRegister) {
             model.addUser(username, password, 0);
             model.changeNewUserProperty("username", "");
             model.changeNewUserProperty("password", "");
             window.location.assign("#/");
-        }  
+        }
     }
 
-    onLogging(){
+    onLogging() {
 
         var username = model.state.newUser.username;
         var password = model.state.newUser.password;
 
+       
         model.verifyLoginUser(username, password);
 
-        if(!model.state.invalidLogin){
+        if (!model.state.invalidLogin) {
             model.changeNewUserProperty("username", "");
             model.changeNewUserProperty("password", "");
-            window.location.assign("#/logged-user");
-            
+            window.location.assign("#/questions");
+
         }
-        //else
-         //   window.location.assign("#/2");
+        else
+            model.changeLoginProperty("invalidLogin", false); 
     }
 
     onChange(property, value) {

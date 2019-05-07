@@ -8,16 +8,22 @@ class Login extends EventEmitter
             users: [{
                 username: "flyforfun98",
                 password: "kicv51mk45",
-                points: 13
+                points: 0,
+                userStatus: "ALLOWED",
+                userPermission: "ADMIN"
             }, {
                 username: "flavius1",
                 password: "parola1",
-                points: -5
+                points: 0,
+                userStatus: "BANNED",
+                userPermission: "USER"
             }],
             newUser: {
                 username: "",
                 password: "",
-                points: 0
+                points: 0,
+                userStatus: "ALLOWED",
+                userPermission: "USER"
             },
 
             invalidLogin: true,
@@ -26,7 +32,9 @@ class Login extends EventEmitter
             currentUser: {
                 username: "",
                 password: "",
-                points: 0
+                points: 0,
+                userStatus: "ALLOWED",
+                userPermission: ""
             }
 
 
@@ -40,7 +48,9 @@ class Login extends EventEmitter
             users: this.state.users.concat([{
                 username: username,
                 password: password,
-                points: points
+                points: points,
+                userStatus: "ALLOWED",
+                userPermission: "USER"
             }])
         };
         this.emit("change", this.state);
@@ -52,6 +62,20 @@ class Login extends EventEmitter
             newUser: {
                 ...this.state.newUser,
                 [property]: value
+            }
+        };
+        this.emit("change", this.state);
+    }
+
+    changeUserPointsProperty(value, index) {
+        this.state = {
+            ...this.state,
+            users: {
+                ...this.state.users,
+                [index]:{
+                    ...this.state.users[index],
+                    points: value
+                }
             }
         };
         this.emit("change", this.state);
@@ -81,13 +105,20 @@ class Login extends EventEmitter
     {
         var ok = true;
         var points = 0;
+        var permission;
         for(let i = 0; i < this.state.users.length; i++)
         {
             var user = this.state.users[i];
-            if(user.username === username && user.password === password)
+            if(user.username === username && user.password === password && user.userStatus === "ALLOWED")
             {
                 ok = false;
                 points = user.points;
+                permission = user.userPermission;
+                this.changeLoginProperty("isUserBanned", false);
+            }
+            else{
+                if(user.userStatus === "BANNED")
+                    this.changeLoginProperty("isUserBanned", true);
             }
         }  
         if(ok)
@@ -98,6 +129,7 @@ class Login extends EventEmitter
             this.changeCurrentUserProperty("username", username);
             this.changeCurrentUserProperty("password", password);
             this.changeCurrentUserProperty("points", points);
+            this.changeCurrentUserProperty("userPermission", permission);
         }
     }
 
@@ -117,6 +149,16 @@ class Login extends EventEmitter
         else
             this.changeLoginProperty("invalidRegister", false);
        
+    }
+
+    banUser(user){
+
+        user.userStatus = "BANNED";
+    }
+
+    unbanUser(user){
+
+        user.userStatus = "ALLOWED";
     }
 }
 

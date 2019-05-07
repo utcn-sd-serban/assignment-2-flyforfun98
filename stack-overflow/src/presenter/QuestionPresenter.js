@@ -3,6 +3,8 @@ import modelLogin from "../model/Login";
 
 class QuestionPresenter {
 
+    
+
     onCreate() {
         
         var author = modelLogin.state.currentUser;
@@ -43,7 +45,7 @@ class QuestionPresenter {
     logOut()
     {
         modelLogin.changeLoginProperty("currentUser", "");
-        window.location.assign("/");
+        window.location.assign("/#/");
     }
 
     showQuestions()
@@ -59,7 +61,6 @@ class QuestionPresenter {
     
     }
 
-    
     onFilterByTags()
     {
         var searchFieldTag = question.state.searchFieldTag;
@@ -68,6 +69,11 @@ class QuestionPresenter {
 
     }
 
+    onQuestionClick(index, currentQuestion) {
+        
+        question.changeQuestionProperty("currentQuestion", currentQuestion);
+        window.location.assign("#/questions/question/" + index);
+    }
 }
 
 const questionPresenter = new QuestionPresenter();

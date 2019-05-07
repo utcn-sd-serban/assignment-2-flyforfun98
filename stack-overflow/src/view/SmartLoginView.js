@@ -6,7 +6,8 @@ import loginPresenter from "../presenter/LoginPresenter";
 
 const mapModelStateToComponentState = modelState => ({
     username: modelState.newUser.username,
-    password: modelState.newUser.password
+    password: modelState.newUser.password,
+    isUserBanned: modelState.isUserBanned
 });
 
 export default class SmartLoginView extends Component {
@@ -29,7 +30,8 @@ export default class SmartLoginView extends Component {
                 onChange={loginPresenter.onChange}
                 onLogging={loginPresenter.onLogging}
                 username={this.state.username}
-                password={this.state.password} />
+                password={this.state.password}
+                isUserBanned={this.isUserBanned}/>
         );
     }
 }

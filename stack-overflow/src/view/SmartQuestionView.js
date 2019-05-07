@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import model from "../model/Question";
 
-import QuestionView from "./QuestionView";
+import MainQuestionView from "./MainQuestionView";
 import questionPresenter from "../presenter/QuestionPresenter";
 
 const mapModelStateToComponentState = modelState => ({
-    questions: modelState.questions,
+    questionsCopy: modelState.questionsCopy,
     title: modelState.newQuestion.title,
     text: modelState.newQuestion.text,
     tags: modelState.newQuestion.tags,
@@ -27,20 +27,24 @@ export default class SmartQuestionView extends Component {
         model.removeListener("change", this.listener);
     }
 
+    
     render() {
         return (
             
-            <QuestionView
+            <MainQuestionView
                 onCreate={questionPresenter.onCreate}
+                onQuestionClick={questionPresenter.onQuestionClick}
                 showQuestions={questionPresenter.showQuestions}
                 onChange={questionPresenter.onChange}
                 onChangeQuestion={questionPresenter.onChangeQuestion}
                 onFilterByTitle={questionPresenter.onFilterByTitle}
                 onFilterByTags={questionPresenter.onFilterByTags}
+                setQuestionModal={questionPresenter.setQuestionModal}
+                onEditQuestion={questionPresenter.onEditQuestion}
                 searchFieldTitle={this.state.searchFieldTitle}
                 searchFieldTag={this.state.searchFieldTag}
                 logOut={questionPresenter.logOut}
-                questions={this.state.questions}
+                questionsCopy={this.state.questionsCopy}
                 title={this.state.title}
                 text={this.state.text}
                 tags={this.state.tags}
